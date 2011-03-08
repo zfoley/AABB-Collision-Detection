@@ -12,10 +12,13 @@ package
 		private var _halfwidth:Vector3D = new Vector3D();
 		private var _position:Vector3D = new Vector3D();
 		private var _color:uint;
+		private var _extents:Vector.<Vector3D> = new Vector.<Vector3D>();
 		public function AABB(w:Number=25, h:Number = 25) 
 		{	
 			_color = Math.random() * 0xFFFFFF;			
 			halfwidth = new Vector3D(w, h);
+			_extents.length = 4;
+			_extents.fixed = true;
 		}
 		
 		public function get halfwidth():Vector3D { return _halfwidth; }
@@ -23,7 +26,16 @@ package
 		public function set halfwidth(value:Vector3D):void 
 		{
 			_halfwidth = value;
+			makeExtents()
 			draw();
+		}
+		
+		private function makeExtents():void
+		{
+			_extents[0] = new Vector3D(halfwidth.x, halfwidth.y);
+			_extents[1] = new Vector3D(halfwidth.x, -halfwidth.y);
+			_extents[2] = new Vector3D(-halfwidth.x, halfwidth.y);
+			_extents[3] = new Vector3D(-halfwidth.x, -halfwidth.y);
 		}
 		
 		private function draw():void
@@ -42,6 +54,8 @@ package
 		{
 			_position = value;
 		}
+		
+		public function get extents():Vector.<Vector3D> { return _extents; }
 		
 		
 	}
